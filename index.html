@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI 智能股票系统 · stock.miaoddou.com（云端门面）</title><title>AI 智能股票分析交易系统 · 看板</title>
+<title>AI 智能股票分析交易系统 · 看板</title>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
 <style>
   :root{
@@ -959,7 +959,7 @@ function stockToken(){ try{ return localStorage.getItem("stock_tok")||""; }catch
 const __origFetch = window.fetch.bind(window);
 window.fetch = (u, o)=>{
   o = o||{};
-  if(typeof u === "string" && u.charAt(0) === "/") u = API_BASE + u;   // 门面站 → 云端 API
+  if(typeof u === "string" && u.charAt(0) === "/") u = API_BASE + u;
   const t = stockToken();
   if(t){ o.headers = Object.assign({}, o.headers||{}, {"X-Token": t}); }
   return __origFetch(u, o).then(r=>{ if(r.status===401) showAuth(); return r; });
@@ -1408,7 +1408,7 @@ function drawMinute(m){
         lineStyle:{color:cssVar("--gold","#c8a45c"), width:1, type:"dashed"}}
     ]}));
   document.getElementById("cm-tag").textContent =
-    `${dateStr||""} · ${m.label||"分时"} · 现价 ${last}（${up?"+":""}${((last/first-1)*100).toFixed(2)}% vs 开盘）`;
+    `${dateStr||""} · ${m.label||"分时"}${m.approx?"（5分钟线近似，上游分时被限流时自动启用）":""} · 现价 ${last}（${up?"+":""}${((last/first-1)*100).toFixed(2)}% vs 开盘）`;
   overlayTrades("min");
 }
 
